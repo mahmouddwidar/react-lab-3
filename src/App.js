@@ -1,24 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import Home from './Components/Home';
+import Nav from './Components/Nav';
+import Products from './Components/Products';
+import Error from './Components/Error'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import AddProduct from './Components/AddProduct';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
+}
+
+function AppRoutes() {
+  let location = useLocation();
+  let isRouteDefined = ['/', '/home', '/products', '/add'].includes(location.pathname);
+
+  return (
+    <>
+      {isRouteDefined && <Nav />}
+      <div className="container mt-3">
+        <Routes>
+          {isRouteDefined ? (
+            <>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/add" element={<AddProduct />} />
+            </>
+          ) : (
+            <Route path="*" element={<Error />} />
+          )}
+        </Routes>
+      </div>
+    </>
   );
 }
 
